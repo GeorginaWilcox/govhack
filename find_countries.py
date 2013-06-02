@@ -2,7 +2,11 @@
 import pickle
 import re
 from collections import defaultdict
+<<<<<<< HEAD
 import json
+=======
+from datetime import datetime
+>>>>>>> 3b810f683a0222a8dcd37fedbfedf7d28b8b5676
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ -_'.?!"
 
@@ -31,21 +35,26 @@ def get_countries():
 
 
 if __name__ == '__main__':
+    prev = datetime.now()
     countries = get_countries()
-    articles = pickle.load(open('samples_1914','rb'))
-    
-    freq = defaultdict(int)
-    for k, text in articles.items():
-        text = text.upper()
-###        print("Searching article ",k)
-        for country, missspellings in countries.items():
-            for miss in missspellings:
-                if miss in text:
-                    freq[country] += 1
-                    break
-    data = [['Country', 'Number of mentions']]
-    for country in freq:
-        data.append([country, freq[country]])
 
-    print(json.dumps(data))        
+    start_year = 1842
+    end_year = 1954
+    for year in range(start_year, end_year + 1,4):
+        time_elasped = datetime.now() - prev
+        prev = datetime.now()
+        print(time_elasped)
+        print("Searching ",year)
+
+        articles = pickle.load(open('data1500/samples_'+str(year),'rb'))
+        freq = defaultdict(int)
+        for k, text in articles.items():
+            text = text.upper()
+    ###        print("Searching article ",k)
+            for country, missspellings in countries.items():
+                for miss in missspellings:
+                    if miss in text:
+                        freq[country] += 1
+                        break
+        pickle.dump(freq,open('data1500/countries_'+str(year),'wb'))
 
