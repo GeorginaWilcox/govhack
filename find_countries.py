@@ -2,11 +2,8 @@
 import pickle
 import re
 from collections import defaultdict
-<<<<<<< HEAD
 import json
-=======
 from datetime import datetime
->>>>>>> 3b810f683a0222a8dcd37fedbfedf7d28b8b5676
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ -_'.?!"
 
