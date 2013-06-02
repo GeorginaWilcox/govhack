@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import pickle
+import re
 from collections import defaultdict
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ -_'.?!"
@@ -13,13 +14,12 @@ def edits1(word):
     return set(deletes + transposes + replaces + inserts)
 
 def get_countries():
-    c = {}
+    c = defaultdict(set)
     with open('countries.txt', 'r') as f:
         for line in f:
             country = line.strip()
-            c[country.upper()] = country 
-            for miss in edits1(country.upper()):
-                c[miss] = country
+            c[country].add(country.upper())
+            c[country].update(edits1(country.upper()))
     return c
 
 
@@ -31,8 +31,12 @@ if __name__ == '__main__':
     articles = pickle.load(open('samples_1914','rb'))
     freq = defaultdict(int)
     for k, text in articles.items():
-        for country in countries.keys():
-            if country in text.upper():
-                freq[country] += 1
-        
+        text = text.upper()
+###        print("Searching article ",k)
+        for country, missspellings in countries.items():
+            for miss in missspellings:
+                if miss in text:
+                    freq[country] += 1
+                    break
+    print(freq)        
 
