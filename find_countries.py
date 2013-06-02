@@ -2,6 +2,7 @@
 import pickle
 import re
 from collections import defaultdict
+import json
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ -_'.?!"
 
@@ -18,8 +19,11 @@ def get_countries():
     with open('countries.txt', 'r') as f:
         for line in f:
             country = line.strip()
-            c[country].add(country.upper())
-            c[country].update(edits1(country.upper()))
+            aliases = country.split('\t')
+            for alias in aliases:
+                c[country].add(alias.upper())
+                if len(alias) > 4:
+                    c[country].update(edits1(country.upper()))
     return c
 
 
@@ -29,6 +33,7 @@ def get_countries():
 if __name__ == '__main__':
     countries = get_countries()
     articles = pickle.load(open('samples_1914','rb'))
+    
     freq = defaultdict(int)
     for k, text in articles.items():
         text = text.upper()
@@ -38,5 +43,9 @@ if __name__ == '__main__':
                 if miss in text:
                     freq[country] += 1
                     break
-    print(freq)        
+    data = [['Country', 'Number of mentions']]
+    for country in freq:
+        data.append([country, freq[country]])
+
+    print(json.dumps(data))        
 
