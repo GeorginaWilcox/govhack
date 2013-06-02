@@ -45,7 +45,11 @@ if __name__ == '__main__':
 
         articles = pickle.load(open('data1500/samples_'+str(year),'rb'))
         freq = defaultdict(int)
+        count = 0
         for k, text in articles.items():
+            count += 1
+            if count > 500:
+                break
             text = text.upper()
     ###        print("Searching article ",k)
             for country, missspellings in countries.items():
