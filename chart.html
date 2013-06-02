@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+        <script type='text/javascript' src='jquery.min.js'></script>
+        <script type='text/javascript' src='freq_data.js'></script>
+        <script type='text/javascript'>
+            var self = this;
+            self.chart = null;
+            google.load('visualization', '1', {'packages': ['geochart']});
+            google.setOnLoadCallback(drawRegionsMap);
+            $(document).ready(function() {
+                    $('#year_selector').change(function() {
+                        var current_year = $('#year_selector')[0].value;
+                        $($('#current_year')[0]).text(current_year);
+                        data = google.visualization.arrayToDataTable(years[current_year]);
+                        self.chart.draw(data, self.options);
+                        
+                        });
+                    });
+
+
+
+            function drawRegionsMap() {
+                var data = google.visualization.arrayToDataTable(
+
+                        [["Country", "Number of mentions"], ["Sudan", 2], ["Nepal", 20], ["Haiti", 2], ["Monaco", 1], ["Palau", 2], ["Macedonia", 1], ["Germany", 51], ["Mexico", 2], ["Spain", 8], ["Japan", 1], ["Turkey", 3], ["Austria", 35], ["France", 9], ["Sweden", 1], ["Argentina", 1], ["Chad", 62], ["Australia", 22], ["New Zealand", 1], ["Mali", 68], ["Peru", 47], ["Syria", 13], ["Cuba", 13], ["Portugal", 1], ["Tonga", 3], ["Denmark", 2], ["Belize", 7], ["Iran", 83], ["Switzerland", 1], ["Hungary", 2], ["Greece", 1], ["Iceland", 1], ["Israel", 1], ["Iraq", 10], ["Bulgaria", 4], ["Chile", 23], ["Liberia", 2], ["Poland", 1], ["Serbia", 5], ["Armenia", 1], ["Canada", 5], ["Malta", 4], ["Benin", 28], ["India", 13], ["Egypt", 4], ["Russia", 15], ["Laos", 38], ["Togo", 22], ["Finland", 2], ["Montenegro", 2], ["Samoa", 1], ["Belgium", 8], ["Albania", 1], ["Niger", 13], ["Fiji", 18], ["South Africa", 3], ["Oman", 90], ["Yemen", 30], ["Italy", 27], ["Ireland", 1]]
+                        );
+
+                self.options = {};
+
+                self.chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+                self.chart.draw(data, options);
+            };
+
+        </script>
+        <style>
+            #year_selector {
+                width: 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Where are we talking about?</h1>
+        <p>Showing data for <span id="current_year">1914</span></p>
+        <input id="year_selector" type="range" min=1842 max=1954 step=4 value=1914 />
+        <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    </body>
+</html>
